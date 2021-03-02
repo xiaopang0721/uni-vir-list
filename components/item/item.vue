@@ -23,10 +23,10 @@
 
 <script>
 	/* eslint-disable no-console */
-	import ResizeObserver from 'resize-observer-polyfill';
+	import ResizeObserverMixins from "../vir-list/ResizeObserver-Mixins.js"
 	import faker from 'faker';
-
 	export default {
+		mixins:[ResizeObserverMixins],
 		name: 'item',
 		props: {
 			index: {
@@ -63,14 +63,7 @@
 		},
 		mounted() {
 			if (this.fixedHeight) return;
-
-			const ro = new ResizeObserver((entries, observer) => {
-				// 高度发生变化时，将 'size-change' 事件 emit 到父组件
-				this.$emit('size-change', this.index);
-			});
-			ro.observe(this.$refs.item.$el);
-			this.$once('hook:beforeDestroy', ro.disconnect.bind(ro));
-		},
+		}
 	};
 </script>
 
