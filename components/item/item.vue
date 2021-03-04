@@ -1,5 +1,5 @@
 <template>
-	<view class="item" ref="item">
+	<view class="item" ref="item" v-cloak>
 		<view class="item__wrapper" :class="{ 'is-fixed': fixedHeight }">
 			<view class="item__info">
 				<image mode="widthFix" :src="data.avatar" class="item__avatar" />
@@ -14,8 +14,8 @@
 			</view>
 			<view v-else>
 				<view class="item__paragraph">{{ data.paragraph }}</view>
-				<image mode="widthFix" :src="defferImgSrc" :style="{ width: data.img.width }" class="item__img" />
-				<image mode="widthFix" :src="data.img.src" :style="{ width: data.img.width }" class="item__img" />
+				<image mode="widthFix" :src="defferImgSrc" :style="{ width: data.img.width }" class="item__img" @load="imgload"/>
+				<image mode="widthFix" :src="data.img.src" :style="{ width: data.img.width }" class="item__img" @load="imgload" />
 			</view>
 		</view>
 	</view>
@@ -23,10 +23,10 @@
 
 <script>
 	/* eslint-disable no-console */
-	import ResizeObserverMixins from "../vir-list/ResizeObserver-Mixins.js"
+	// import ResizeObserverMixins from "../vir-list/ResizeObserver-Mixins.js"
 	import faker from 'faker';
 	export default {
-		mixins:[ResizeObserverMixins],
+		// mixins: [ResizeObserverMixins],
 		name: 'item',
 		props: {
 			index: {
@@ -45,6 +45,7 @@
 		data() {
 			return {
 				defferImgSrc: '',
+				height: 0
 			};
 		},
 		created() {
@@ -56,13 +57,35 @@
 					this.defferImgSrc = this.data.img.src;
 					this.data.img.isDeffer = true;
 				}, faker.random.number({
-					min: 300,
-					max: 5000
+					min: 0,
+					max: 0
 				}));
+			}
+		},
+		methods: {
+			imgload(){
+				this.geiHeight('imgload')
+			},
+			async geiHeight(str = 'mounted') {
+				await this.$nextTick();
+				setTimeout(() => {
+					let query = uni.createSelectorQuery();
+					// #ifndef MP-ALIPAY || MP-DINGTALK
+					query = query.in(this) // 支付宝小程序不支持in(this),而字节跳动小程序必须写in(this), 否则都取不到值
+					// #endif
+					query.select('.item').fields({
+						size: true
+					}, size => {
+						this.height = size.height
+						// console.log('index',this.index,str,this.height);
+						this.$emit('size-change', this.index);
+					}).exec()
+				}, 20)
 			}
 		},
 		mounted() {
 			if (this.fixedHeight) return;
+			this.geiHeight('mounted')
 		}
 	};
 </script>

@@ -10,7 +10,7 @@ export function http() {
 			} catch (e) {
 				reject(e)
 			}
-		}, 1000);
+		}, 3000);
 	})
 }
 

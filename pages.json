@@ -6,11 +6,31 @@
 				"navigationBarTitleText": "uni-app"
 			}
 		}
-	],
+	    // {
+     //        "path" : "pages/mescroll/mescroll",
+     //        "style" :                                                                                    
+     //        {
+     //            "navigationBarTitleText": "",
+     //            "enablePullDownRefresh": false
+     //        }
+            
+     //    }
+    ],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "uni-app",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationBarBackgroundColor": "#e54c45",
+		"navigationBarTitleText": "dykj",
+		"navigationStyle": "custom",
+		"navigationBarTextStyle": "white",
+		//mescroll 配置
+		"enablePullDownRefresh": false, // 删除此项: 不开启系统自带的下拉刷新, 默认false
+		"disableScroll": false, // 删除此项, 否则页面无法滚动
+		"app-plus": {
+			"bounce": "none" // 取消APP端iOS回弹,避免与下拉刷新冲突 (可统一配在 'globalStyle')
+		},
+		"mp-alipay": {
+			/* 支付宝小程序特有相关 */
+			"transparentTitle": "always",
+			"allowsBounceVertical": "NO"
+		} // 取消支付宝和钉钉小程序的iOS回弹,避免与下拉刷新冲突 (可统一配在 'globalStyle')
 	}
 }

@@ -9,7 +9,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "faker": "^4.1.0"
+    "faker": "^4.1.0",
+    "uview-ui": "^1.8.3"
   },
   "devDependencies": {
     "resize-observer-polyfill": "^1.5.1"
