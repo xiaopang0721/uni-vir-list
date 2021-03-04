@@ -1,5 +1,5 @@
 const BUFFER_SIZE = 3;
-const ESTIMATED_HEIGHT = 150;
+const ESTIMATED_HEIGHT = 198;
 import {
 	http
 } from '../../api/services/http.js'
@@ -99,7 +99,12 @@ const VirMixin = {
 		/*上拉加载的回调: 其中page.num:当前页 从1开始, page.size:每页数据条数,默认10 */
 		upCallback(page) {
 			console.log('upCallback', page.num);
-			http().then(data => {
+			uni.showLoading({
+			    title: '数据加载中',
+				mask:true
+			});
+			let t = page.num > 1 ? 1000 : 1000;
+			http(t).then(data => {
 				if (page.num == 1) this.init();
 				// 给每个 item 打上序号标记
 				for (let i = 0; i < data.length; i++) {
@@ -107,12 +112,14 @@ const VirMixin = {
 					item.index = this.listData.length;
 					this.listData.push(item);
 				}
+				uni.hideLoading();
 				this.mescroll.endSuccess(data.length, data.length == 10)
 				this.updateVisibleData();
 			}).catch((e) => {
 				//联网失败, 结束加载
 				console.log('加载出错', e);
 				this.mescroll.endErr();
+				uni.hideLoading();
 			})
 
 		},
@@ -125,7 +132,7 @@ const VirMixin = {
 			}
 		},
 		handleScroll() {
-			if (this.revising) return;
+			// if (this.revising) return;
 			// console.log('scrollTop',this.mescroll.scrollTop);
 			const delta = this.mescroll.scrollTop - this.lastScrollTop;
 			this.lastScrollTop = this.mescroll.scrollTop;

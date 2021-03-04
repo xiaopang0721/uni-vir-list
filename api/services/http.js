@@ -1,7 +1,7 @@
 import {
 	fetchData
 } from '../../helper.js';
-export function http() {
+export function http(t) {
 	return new Promise((reslove, reject) => {
 		setTimeout(()=> {
 			try {
@@ -10,7 +10,7 @@ export function http() {
 			} catch (e) {
 				reject(e)
 			}
-		}, 3000);
+		}, t || 3000);
 	})
 }
 

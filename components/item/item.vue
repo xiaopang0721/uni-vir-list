@@ -39,13 +39,13 @@
 			},
 			fixedHeight: {
 				type: Boolean,
-				default: false,
+				default: true,
 			},
 		},
 		data() {
 			return {
 				defferImgSrc: '',
-				height: 0
+				height: 198
 			};
 		},
 		created() {
@@ -64,7 +64,7 @@
 		},
 		methods: {
 			imgload(){
-				this.geiHeight('imgload')
+				// this.geiHeight('imgload')
 			},
 			async geiHeight(str = 'mounted') {
 				await this.$nextTick();
@@ -85,7 +85,7 @@
 		},
 		mounted() {
 			if (this.fixedHeight) return;
-			this.geiHeight('mounted')
+			// this.geiHeight('mounted')
 		}
 	};
 </script>
