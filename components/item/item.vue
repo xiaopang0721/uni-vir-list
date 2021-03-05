@@ -64,7 +64,7 @@
 		},
 		methods: {
 			imgload(){
-				// this.geiHeight('imgload')
+				this.geiHeight('imgload')
 			},
 			async geiHeight(str = 'mounted') {
 				await this.$nextTick();
@@ -78,14 +78,14 @@
 					}, size => {
 						this.height = size.height
 						// console.log('index',this.index,str,this.height);
-						this.$emit('size-change', this.index);
+						this.$emit('size-change', {index:this.index,height:this.height});
 					}).exec()
 				}, 20)
 			}
 		},
 		mounted() {
 			if (this.fixedHeight) return;
-			// this.geiHeight('mounted')
+			this.geiHeight('mounted')
 		}
 	};
 </script>

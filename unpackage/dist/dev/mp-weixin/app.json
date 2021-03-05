@@ -1,0 +1,15 @@
+{
+  "pages": [
+    "pages/index/index"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarBackgroundColor": "#e54c45",
+    "navigationBarTitleText": "dykj",
+    "navigationStyle": "custom",
+    "navigationBarTextStyle": "white",
+    "enablePullDownRefresh": false,
+    "disableScroll": false
+  },
+  "usingComponents": {}
+}

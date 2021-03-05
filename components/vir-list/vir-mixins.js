@@ -45,9 +45,7 @@ const VirMixin = {
 			cachedScrollY: [],
 			//缓存的高度
 			cachedHeight: [],
-			revising: false,
-			curstart: 0,
-			curend: 0
+			revising: false
 		}
 	},
 	computed: {
@@ -92,17 +90,11 @@ const VirMixin = {
 				this.cachedScrollY = [],
 				//缓存的高度
 				this.cachedHeight = [],
-				this.revising = false,
-				this.curstart = 0,
-				this.curend = 0
+				this.revising = false
 		},
 		/*上拉加载的回调: 其中page.num:当前页 从1开始, page.size:每页数据条数,默认10 */
 		upCallback(page) {
 			console.log('upCallback', page.num);
-			uni.showLoading({
-			    title: '数据加载中',
-				mask:true
-			});
 			let t = page.num > 1 ? 1000 : 1000;
 			http(t).then(data => {
 				if (page.num == 1) this.init();
@@ -112,7 +104,6 @@ const VirMixin = {
 					item.index = this.listData.length;
 					this.listData.push(item);
 				}
-				uni.hideLoading();
 				this.mescroll.endSuccess(data.length, data.length == 10)
 				this.updateVisibleData();
 			}).catch((e) => {
@@ -126,13 +117,12 @@ const VirMixin = {
 		emptyClick() {
 
 		},
-		handleSizeChange(index) {
-			if (this.curstart <= index && index < this.curend) {
-				this.calItemScrollY();
-			}
+		handleSizeChange({index,height}) {
+			// this.cachedHeight[index] = height
+			this.calItemScrollY();
 		},
 		handleScroll() {
-			// if (this.revising) return;
+			if (this.revising) return;
 			// console.log('scrollTop',this.mescroll.scrollTop);
 			const delta = this.mescroll.scrollTop - this.lastScrollTop;
 			this.lastScrollTop = this.mescroll.scrollTop;
@@ -205,8 +195,8 @@ const VirMixin = {
 			}
 		},
 		// 计算每一个 item 的 translateY 的高度
-		async calItemScrollY() {
-			await this.$nextTick();
+		calItemScrollY() {
+			// await this.$nextTick();
 			// 修正 vue diff 算法导致 item 顺序不正确的问题
 			this.$refs.items.sort((a, b) => a.index - b.index);
 
@@ -253,10 +243,10 @@ const VirMixin = {
 			}
 		},
 		updateVisibleData() {
-			const start = this.curstart = (this.firstAttachedItem = Math.max(0, this.anchorItem.index -
+			const start = (this.firstAttachedItem = Math.max(0, this.anchorItem.index -
 				BUFFER_SIZE));
 			this.lastAttachedItem = this.firstAttachedItem + this.VISIBLE_COUNT + BUFFER_SIZE * 2;
-			const end = this.curend = Math.min(this.lastAttachedItem, this.listData.length);
+			const end = Math.min(this.lastAttachedItem, this.listData.length);
 
 			this.visibleData = this.listData.slice(start, end);
 		}
